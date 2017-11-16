@@ -1,6 +1,7 @@
 import sys
 import pygame
 from settings import Settings
+from ship import Ship
 
 
 def run_game():
@@ -9,6 +10,9 @@ def run_game():
     settings = Settings()
     screen = pygame.display.set_mode((settings.screen_width, settings.screen_height))
     pygame.display.set_caption("Alien Wars")
+
+    # 创建一艘飞船
+    ship = Ship(screen)
 
     # 开始游戏主循环
     while True:
@@ -20,6 +24,7 @@ def run_game():
 
         # 每次循环是都重新绘制屏幕
         screen.fill(settings.bg_color)
+        ship.blitme()
 
         # 让最近绘制的屏幕可见
         pygame.display.flip()
