@@ -1,2 +1,2 @@
 # Alien-Wars
-My first python game
+A little game based on Python
