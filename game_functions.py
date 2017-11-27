@@ -3,6 +3,7 @@ import pygame
 from bullet import Bullet
 from alien import Alien
 from time import sleep
+import highscore as hs
 
 
 def check_keydown_events(event, settings, screen, ship, bullets):
@@ -123,7 +124,6 @@ def check_bullet_alien_collisions(settings, screen, stats, sb, ship, aliens, bul
         for aliens in collisions.values():
             stats.score += settings.alien_points * len(aliens)
             sb.prep_score()
-        check_high_score(stats, sb)
 
     if len(aliens) == 0:
         # 删除现有的所有子弹，并创建一个新的外星人群
@@ -210,7 +210,7 @@ def ship_hit(settings, screen, stats, sb, ship, aliens, bullets):
         stats.ships_left -= 1
 
         # 更新记分牌
-        sb.prep_ships
+        sb.prep_ships()
 
         # 清空外星人和子弹列表
         aliens.empty()
@@ -221,11 +221,14 @@ def ship_hit(settings, screen, stats, sb, ship, aliens, bullets):
         ship.center_ship()
 
         # 暂停
-        sleep(3)
+        sleep(1)
 
     else:
         stats.game_active = False
         pygame.mouse.set_visible(True)
+
+    # 游戏结束时判断分数是否为最高分
+    check_high_score(stats, sb)
 
 
 def check_aliens_bottom(settings, screen, stats, sb, ship, aliens, bullets):
@@ -242,4 +245,5 @@ def check_high_score(stats, sb):
     """检测是否诞生了最高分"""
     if stats.score > stats.high_score:
         stats.high_score = stats.score
+        hs.save_json(stats.high_score)
         sb.prep_high_score()
